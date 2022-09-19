@@ -13,7 +13,7 @@ import {
 
 import Login from "./pages/Login";
 
-import View from "./pages/View";
+import Eingabe from "./pages/Eingabe";
 
 import { Route, Routes } from "react-router-dom";
 
@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/Login" element={<Login />}></Route>
 
-        <Route path="/View" element={<View />}></Route>
+        <Route path="/Eingabe" element={<Eingabe />}></Route>
       </Routes>
     </ChakraProvider>
   );

@@ -1,10 +1,10 @@
 import React from "react";
-import Screen from "../components/Screen";
+import Input from "../components/Input";
 
 function Formular() {
   return (
     <div>
-      <Screen />
+      <Input />
     </div>
   );
 }
