@@ -13,7 +13,9 @@ import {
 
 import Login from "./pages/Login";
 
-import Eingabe from "./pages/Eingabe";
+import Input from "./pages/Input";
+
+import Display from "./pages/Display";
 
 import { Route, Routes } from "react-router-dom";
 
@@ -22,8 +24,8 @@ function App() {
     <ChakraProvider theme={theme}>
       <Routes>
         <Route path="/Login" element={<Login />}></Route>
-
-        <Route path="/Eingabe" element={<Eingabe />}></Route>
+        <Route path="/Display" element={<Display />}></Route>
+        <Route path="/Input" element={<Input />}></Route>
       </Routes>
     </ChakraProvider>
   );
