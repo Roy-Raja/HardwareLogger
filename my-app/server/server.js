@@ -7,6 +7,8 @@ const { CurvePath } = require("three");
 app.use(cors());
 app.use(express.json());
 
+var abfrage = 0;
+
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
@@ -25,9 +27,9 @@ db.connect(function (err) {
   );
 });
 
-app.get("/Farbe", (req, res) => {
+app.get("/cpu", (req, res) => {
   db.query(
-    `(SELECT CPU_Bezeichnung, CPU_Hersteller FROM CPU)`,
+    `(SELECT CPU_Hersteller as 'CPUName' FROM cpu = ${abfrage})`,
     (err, result) => {
       if (err) {
         console.log(err);
