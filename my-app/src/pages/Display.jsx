@@ -1,5 +1,5 @@
 import React from "react";
-import Anzeige from "../components/Display";
+import Legende from "../components/display";
 import { Loader } from "../Context/Context";
 import { useState } from "react";
 
@@ -8,7 +8,7 @@ function Formular() {
   return (
     <div>
       <Loader.Provider value={{ abfrage, setabfrage }}>
-        <Anzeige />
+        <Legende />
       </Loader.Provider>
     </div>
   );

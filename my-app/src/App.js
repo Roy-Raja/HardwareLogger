@@ -15,16 +15,20 @@ import Login from "./pages/Login";
 
 import Input from "./pages/Input";
 
-import Display from "./pages/Display";
+import Formular from "./pages/Display";
+
+import Axios from "axios";
 
 import { Route, Routes } from "react-router-dom";
+
+Axios.defaults.baseURL = "http://localhost:3001";
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
       <Routes>
         <Route path="/Login" element={<Login />}></Route>
-        <Route path="/Display" element={<Display />}></Route>
+        <Route path="/Display" element={<Formular />}></Route>
         <Route path="/Input" element={<Input />}></Route>
       </Routes>
     </ChakraProvider>

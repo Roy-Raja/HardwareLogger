@@ -2,11 +2,12 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+const port = 3001;
 
 app.use(cors());
 app.use(express.json());
 
-var abfrage = 0;
+var abfrage = 2;
 
 const db = mysql.createConnection({
   user: "root",
@@ -28,13 +29,20 @@ db.connect(function (err) {
 
 app.get("/cpu", (req, res) => {
   db.query(
-    `(SELECT CPU_Hersteller as 'CPUName' FROM cpu = ${abfrage})`,
+    `(SELECT CPU_Hersteller as 'CPUName', CPU_Bezeichnung, CPU_Kerne FROM cpu )`, //WHERE CPU_ID = ${abfrage}
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        res.send(abfrage);
+        // console.log(
+        //   "Meine Antwort" + result + " Und meine Response ist " + res
+        // );
+        res.send(result);
       }
     }
   );
+});
+
+app.listen(port, () => {
+  console.log("Server läuft auf " + port);
 });
