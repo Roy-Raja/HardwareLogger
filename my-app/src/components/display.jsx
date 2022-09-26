@@ -28,6 +28,7 @@ import { Loader } from "../Context/Context";
 function Legende() {
   const { abfrage } = useContext(Loader);
   var pcs = [];
+  var raum = [];
 
   useEffect(() => {
     PCsetzer();
@@ -38,8 +39,11 @@ function Legende() {
       await Axios.get("/cpu").then((res) => {
         for (let i = 0; i < res.data.length; i++) {
           pcs.push(res.data[i].CPUName);
+          raum.push(res.data[i].raumliste);
         }
         setpcliste(pcs);
+        setraumliste(raum);
+
         console.log(res.data);
       });
     } catch (e) {
@@ -48,14 +52,16 @@ function Legende() {
   };
 
   const [pcliste, setpcliste] = useState([]);
+  const [raumliste, setraumliste] = useState([]);
 
   return (
     <div>
       <Box>
         <Stack>
           <Select placeholder="Raum auswählen">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
+            {raumliste.map((v, i) => (
+              <option value="option1">{raumliste[i]}</option>
+            ))}
           </Select>
           <Select placeholder="PC auswählen">
             <option value="option1"></option>
