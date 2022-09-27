@@ -25,32 +25,116 @@ const db = mysql.createConnection({
 //   );
 // });
 
-app.get("/cpu", (req, res) => {
+app.get("/raum", (req, res) => {
+  db.query(`(SELECT Raum_Nummer FROM raum )`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log(
+      //   "Meine Antwort" + result + " Und meine Response ist " + res
+      // );
+      res.send(result);
+    }
+  });
+});
+
+app.get("/pc", (req, res) => {
+  // console.log(req.query.Raum);
+  var pcsucher = req.query.Raum;
   db.query(
-    `(SELECT CPU_Hersteller as 'CPUName', CPU_Bezeichnung as 'CPUModell', CPU_Kerne FROM cpu )`, //WHERE CPU_ID = ${abfrage}
+    `(SELECT PC_Nummer FROM pc, raum WHERE pc.Raum_FK = Raum.Raum_ID AND Raum.Raum_Nummer = "${pcsucher}" )`,
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(
-          "Meine Antwort" + result + " Und meine Response ist " + res
-        );
         res.send(result);
       }
     }
   );
 });
 
-app.get("/raum", (req, res) => {
+app.get("/hardware", (req, res) => {
+  console.log(req.query.PC_Nummer);
+  var hwsucher = req.query.PC_Nummer;
   db.query(
-    `(SELECT PC_Nummer from pc, raum WHERE PC.RAUM_FK = raum.Raum_ID AND raum.Raum_Nummer = "B122" )`, //WHERE CPU_ID = ${abfrage}
+    `(SELECT pc.PC_Nummer,cpu.CPU_Bezeichnung, cpu.CPU_Hersteller, cpu.CPU_Kerne, cpu.CPU_Mhz,graka.Graka_Bezeichnung, graka.Graka_Hersteller, graka.Graka_Mhz, graka.Graka_VRAM,ram.RAM_Bezeichnung, ram.RAM_Hersteller, ram.RAM_Speicher, ram.RAM_Standard, ram.RAM_Mhz,motherboard.MB_Bezeichnung, motherboard.MB_Faktor, motherboard.MB_Sockel, motherboard.MB_RAM_Slots, motherboard.MB_RAM_Typ, motherboard.MB_Chipsatz,festplatte.FP_Bezeichnung, festplatte.FP_Typ, festplatte.FP_Speicher` +
+      ` FROM pc, cpu, graka, ram, motherboard, festplatte` +
+      ` WHERE pc.PC_Nummer = "${hwsucher}"` +
+      ` AND pc.CPU_FK = cpu.CPU_ID` +
+      ` AND pc.graka_FK = graka.Graka_ID` +
+      ` AND pc.RAM_FK = ram.RAM_ID` +
+      ` AND pc.MB_FK = motherboard.MB_ID` +
+      ` AND pc.FP_FK = festplatte.FP_ID)`,
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(
-        //   "Meine Antwort" + result + " Und meine Response ist " + res
-        // );
+        console.log(result);
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/cpu", (req, res) => {
+  db.query(
+    `(SELECT CPU_Hersteller as 'CPUName', CPU_Bezeichnung as 'CPUModell', CPU_Kerne FROM cpu )`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/Graka", (req, res) => {
+  db.query(
+    `(SELECT Graka_Hersteller as 'GrakaName', Graka_Bezeichnung as 'GrakaModell', Graka_Mhz, Graka_VRAM FROM graka )`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/ram", (req, res) => {
+  db.query(
+    `(SELECT RAM_Hersteller as 'RAMName', RAM_Bezeichnung as 'RAMModell', RAM_Mhz, RAM_Speicher, RAM_Standard FROM ram)`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/mb", (req, res) => {
+  db.query(
+    `(SELECT MB_Bezeichnung as 'MBModell', MB_Faktor, MB_Sockel, MB_Chipsatz, MB_RAM_Slots, MB_RAM_Typ FROM motherboard)`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get("/fp", (req, res) => {
+  db.query(
+    `(SELECT FP_Bezeichnung as 'FPModell', FP_Typ, FP_Speicher  FROM festplatte)`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
         res.send(result);
       }
     }
