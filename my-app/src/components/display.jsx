@@ -189,29 +189,31 @@ function Legende() {
   return (
     <div>
       <Box>
-        <Stack>
-          <Select
-            placeholder="Raum auswählen"
-            onChange={(e) => PCsetzer(e.target.value)}
-          >
-            {raumliste.map((v) => (
-              <option value={v}>{v}</option>
-            ))}
-          </Select>
+        <Box maxW={"30%"}>
+          <Stack>
+            <Select
+              placeholder="Raum auswählen"
+              onChange={(e) => PCsetzer(e.target.value)}
+            >
+              {raumliste.map((v) => (
+                <option value={v}>{v}</option>
+              ))}
+            </Select>
 
-          <Select
-            placeholder="PC auswählen"
-            onChange={(e) => HWsetzer(e.target.value)}
-          >
-            {pcliste.map((v) => (
-              <option value={v}>{v}</option>
-            ))}
-          </Select>
-        </Stack>
+            <Select
+              placeholder="PC auswählen"
+              onChange={(e) => HWsetzer(e.target.value)}
+            >
+              {pcliste.map((v) => (
+                <option value={v}>{v}</option>
+              ))}
+            </Select>
+          </Stack>
+        </Box>
         <div>
           <Box pb={"5%"} pt="3%">
             <TableContainer>
-              <Table>
+              <Table maxW={"60%"}>
                 <Thead>
                   <Tr>
                     <Th>CPU</Th>

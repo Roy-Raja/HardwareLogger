@@ -1,5 +1,6 @@
 import React from "react";
 import Legende from "../components/display";
+import Navbar from "../components/navbar";
 import { Loader } from "../Context/Context";
 import { useState } from "react";
 
@@ -8,6 +9,7 @@ function Formular() {
   return (
     <div>
       <Loader.Provider value={{ abfrage, setabfrage }}>
+        <Navbar />
         <Legende />
       </Loader.Provider>
     </div>
