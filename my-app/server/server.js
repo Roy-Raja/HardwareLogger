@@ -54,14 +54,14 @@ app.get("/pc", (req, res) => {
 });
 
 app.get("/hardware", (req, res) => {
-  console.log(req.query.PC_Nummer);
+  //console.log(req.query.PC_Nummer);
   var hwsucher = req.query.PC_Nummer;
   db.query(
-    `(SELECT pc.PC_Nummer,cpu.CPU_Bezeichnung, cpu.CPU_Hersteller, cpu.CPU_Kerne, cpu.CPU_Mhz,graka.Graka_Bezeichnung, graka.Graka_Hersteller, graka.Graka_Mhz, graka.Graka_VRAM,ram.RAM_Bezeichnung, ram.RAM_Hersteller, ram.RAM_Speicher, ram.RAM_Standard, ram.RAM_Mhz,motherboard.MB_Bezeichnung, motherboard.MB_Faktor, motherboard.MB_Sockel, motherboard.MB_RAM_Slots, motherboard.MB_RAM_Typ, motherboard.MB_Chipsatz,festplatte.FP_Bezeichnung, festplatte.FP_Typ, festplatte.FP_Speicher` +
+    `(SELECT pc.PC_Nummer,cpu.CPU_Bezeichnung, cpu.CPU_Hersteller, cpu.CPU_Kerne, cpu.CPU_Mhz,graka.Graka_Bezeichnung, graka.Graka_Hersteller, graka.Graka_Mhz, graka.Graka_VRAM,ram.RAM_Bezeichnung, ram.RAM_Hersteller, ram.RAM_Speicher, ram.RAM_Speicherart, ram.RAM_Mhz,motherboard.MB_Bezeichnung, motherboard.MB_Faktor, motherboard.MB_Sockel, motherboard.MB_RAM_Slots, motherboard.MB_RAM_Typ, motherboard.MB_Chipsatz,festplatte.FP_Bezeichnung, festplatte.FP_Typ, festplatte.FP_Speicher` +
       ` FROM pc, cpu, graka, ram, motherboard, festplatte` +
       ` WHERE pc.PC_Nummer = "${hwsucher}"` +
       ` AND pc.CPU_FK = cpu.CPU_ID` +
-      ` AND pc.graka_FK = graka.Graka_ID` +
+      ` AND pc.GRAKA_FK = graka.Graka_ID` +
       ` AND pc.RAM_FK = ram.RAM_ID` +
       ` AND pc.MB_FK = motherboard.MB_ID` +
       ` AND pc.FP_FK = festplatte.FP_ID)`,
