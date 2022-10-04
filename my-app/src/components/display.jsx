@@ -29,36 +29,10 @@ function Legende() {
   const { abfrage } = useContext(Loader);
   var pcs = [];
   var raum = [];
-  var cpu = [];
-  var ram = [];
-  var graka = [];
-  var mb = [];
-  var fp = [];
-  var hw = [];
 
   useEffect(() => {
     Raumsetzer();
-    CPUsetzer();
-    Grakasetzer();
-    Ramsetzer();
-    MBsetzer();
-    FPsetzer();
   }, [abfrage]);
-
-  const CPUsetzer = async () => {
-    try {
-      await Axios.get("/cpu").then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          cpu.push(res.data[i].CPUName);
-        }
-        setcpuliste(cpu);
-
-        // console.log(res.data);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const Raumsetzer = async () => {
     try {
@@ -113,77 +87,8 @@ function Legende() {
     }
   };
 
-  const Grakasetzer = async () => {
-    try {
-      await Axios.get("/graka").then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          graka.push(res.data[i].GrakaName);
-        }
-
-        setgrakaliste(graka);
-
-        // console.log(grakaliste);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const Ramsetzer = async () => {
-    try {
-      await Axios.get("/ram").then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          ram.push(res.data[i].RAMName);
-        }
-
-        setramliste(ram);
-
-        // console.log(ramliste);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const MBsetzer = async () => {
-    try {
-      await Axios.get("/mb").then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          mb.push(res.data[i].MBModell);
-        }
-
-        setmbliste(mb);
-
-        // console.log(mbliste);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const FPsetzer = async () => {
-    try {
-      await Axios.get("/fp").then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          fp.push(res.data[i].FPModell);
-        }
-
-        setfpliste(fp);
-
-        // console.log(fpliste);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const [pcliste, setpcliste] = useState([]);
   const [raumliste, setraumliste] = useState([]);
-  const [cpuliste, setcpuliste] = useState([]);
-  const [grakaliste, setgrakaliste] = useState([]);
-  const [ramliste, setramliste] = useState([]);
-  const [mbliste, setmbliste] = useState([]);
-  const [fpliste, setfpliste] = useState([]);
   const [hwliste, sethwliste] = useState([]);
 
   return (
