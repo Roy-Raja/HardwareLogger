@@ -3,10 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 20. Sep 2022 um 10:50
+-- Erstellungszeit: 27. Sep 2022 um 15:08
 -- Server-Version: 10.4.22-MariaDB
 -- PHP-Version: 8.1.2
-CREATE DATABASE hardware;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -41,12 +41,14 @@ CREATE TABLE `cpu` (
 
 INSERT INTO `cpu` (`CPU_ID`, `CPU_Bezeichnung`, `CPU_Hersteller`, `CPU_Kerne`, `CPU_Mhz`) VALUES
 (1, 'Ryzen 7', 'AMD', 8, 4500),
-(2, 'i7 12700k', 'Intel Core', 12, 5000);
+(2, 'i7 12700k', 'Intel Core', 12, 5000),
+(3, 'i5 11400F', 'Intel Core', 6, 2600),
+(4, 'Ryzen Threadripper 3990X', 'AMD', 64, 2900);
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `festplattte`
+-- Tabellenstruktur für Tabelle `festplatte`
 --
 
 CREATE TABLE `festplatte` (
@@ -57,12 +59,14 @@ CREATE TABLE `festplatte` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `festplattte`
+-- Daten für Tabelle `festplatte`
 --
 
 INSERT INTO `festplatte` (`FP_ID`, `FP_Speicher`, `FP_Bezeichnung`, `FP_Typ`) VALUES
-(1, '18TB', 'Toschiba MG09ACA', 'HDD'),
-(2, '1TB', 'Samsung 970 Evo Plus', 'SSD');
+(1, '18 TB', 'Toschiba MG09ACA', 'HDD'),
+(2, '1 TB', 'Samsung 970 Evo Plus', 'SSD'),
+(3, '2 TB', 'Seagate IronWolf', 'HDD'),
+(4, '512 GB', 'Patriot P210', 'SSD');
 
 -- --------------------------------------------------------
 
@@ -84,7 +88,9 @@ CREATE TABLE `graka` (
 
 INSERT INTO `graka` (`Graka_ID`, `Graka_Bezeichnung`, `Graka_Hersteller`, `Graka_Mhz`, `Graka_VRAM`) VALUES
 (1, 'Geforce GTX 760', 'Nvidia', 3000, '2048 MB'),
-(2, 'Geforce TRX 3070 Ti', 'Nvidia', 1575, '8192 MB');
+(2, 'Geforce RTX 3070 Ti', 'Nvidia', 1575, '8192 MB'),
+(3, 'Radeon RX 6400', 'AMD', 2039, '4096 MB'),
+(4, 'Radeon RX 6600 XT', 'AMD', 2593, '8192 MB');
 
 -- --------------------------------------------------------
 
@@ -108,7 +114,36 @@ CREATE TABLE `motherboard` (
 
 INSERT INTO `motherboard` (`MB_ID`, `MB_Bezeichnung`, `MB_Faktor`, `MB_Sockel`, `MB_Chipsatz`, `MB_RAM_Slots`, `MB_RAM_Typ`) VALUES
 (1, 'MPG B550 Gaming Plus', 'ATX', 'So.AM4', 'AMD B550', 4, 'DDR4'),
-(2, 'X570-A PRO', 'ATX', 'So.AM4', 'AMD X570', 4, 'DDR4');
+(2, 'X570-A PRO', 'ATX', 'So.AM4', 'AMD X570', 4, 'DDR4'),
+(3, 'MAG Mortar', 'mATX', 'So .1700', 'Intel B660', 4, 'DDR4'),
+(4, 'X11DPi-N', 'EATX', '2x So.3647', 'Intel C621', 16, 'DDR4');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `pc`
+--
+
+CREATE TABLE `pc` (
+  `PC_ID` int(11) NOT NULL,
+  `PC_Nummer` varchar(10) NOT NULL,
+  `CPU_FK` int(11) NOT NULL,
+  `GRAKA_FK` int(11) NOT NULL,
+  `RAM_FK` int(11) NOT NULL,
+  `MB_FK` int(11) NOT NULL,
+  `FP_FK` int(11) NOT NULL,
+  `RAUM_FK` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `pc`
+--
+
+INSERT INTO `pc` (`PC_ID`, `PC_Nummer`, `CPU_FK`, `GRAKA_FK`, `RAM_FK`, `MB_FK`, `FP_FK`, `RAUM_FK`) VALUES
+(1, 'Platz 11', 2, 1, 1, 1, 3, 1),
+(2, 'Platz 12', 1, 2, 2, 2, 1, 2),
+(3, 'Platz 2', 4, 3, 4, 3, 2, 2),
+(4, 'Platz 4', 3, 4, 3, 4, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -121,17 +156,19 @@ CREATE TABLE `ram` (
   `RAM_Bezeichnung` varchar(25) NOT NULL,
   `RAM_Hersteller` varchar(20) NOT NULL,
   `RAM_Speicher` varchar(11) NOT NULL,
-  `RAM_Speicherart` varchar(10) NOT NULL,
-  `RAM_MHz` varchar(10) NOT NULL
+  `RAM_Standard` varchar(10) NOT NULL,
+  `RAM_Mhz` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `ram`
 --
 
-INSERT INTO `ram` (`RAM_ID`, `RAM_Bezeichnung`, `RAM_Hersteller`, `RAM_Speicher`, `RAM_Speicherart`, `RAM_MHz`) VALUES
+INSERT INTO `ram` (`RAM_ID`, `RAM_Bezeichnung`, `RAM_Hersteller`, `RAM_Speicher`, `RAM_Standard`, `RAM_Mhz`) VALUES
 (1, 'Aegis', 'G.Skill', '8192 MB', 'DDR4-3200', '3200'),
-(2, 'RipJaws V', 'G.Skill', '32768 MB', 'DDR4-3600', '3600');
+(2, 'RipJaws V', 'G.Skill', '32768 MB', 'DDR4-3600', '3600'),
+(3, 'LRDIMM', 'Samsung', '128 GB', 'DDR4-3200', '3200 '),
+(4, 'M3064644406ND', 'Mustang', '512 MB', 'DDR-333', '333');
 
 -- --------------------------------------------------------
 
@@ -163,7 +200,7 @@ ALTER TABLE `cpu`
   ADD PRIMARY KEY (`CPU_ID`);
 
 --
--- Indizes für die Tabelle `festplattte`
+-- Indizes für die Tabelle `festplatte`
 --
 ALTER TABLE `festplatte`
   ADD PRIMARY KEY (`FP_ID`);
@@ -179,6 +216,18 @@ ALTER TABLE `graka`
 --
 ALTER TABLE `motherboard`
   ADD PRIMARY KEY (`MB_ID`);
+
+--
+-- Indizes für die Tabelle `pc`
+--
+ALTER TABLE `pc`
+  ADD PRIMARY KEY (`PC_ID`),
+  ADD KEY `CPU_FK` (`CPU_FK`),
+  ADD KEY `GRAKA_FK` (`GRAKA_FK`),
+  ADD KEY `RAM_FK` (`RAM_FK`),
+  ADD KEY `MB_FK` (`MB_FK`),
+  ADD KEY `FP_FK` (`FP_FK`),
+  ADD KEY `RAUM_FK` (`RAUM_FK`);
 
 --
 -- Indizes für die Tabelle `ram`
@@ -200,59 +249,60 @@ ALTER TABLE `raum`
 -- AUTO_INCREMENT für Tabelle `cpu`
 --
 ALTER TABLE `cpu`
-  MODIFY `CPU_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `CPU_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT für Tabelle `festplattte`
+-- AUTO_INCREMENT für Tabelle `festplatte`
 --
 ALTER TABLE `festplatte`
-  MODIFY `FP_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `FP_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `graka`
 --
 ALTER TABLE `graka`
-  MODIFY `Graka_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Graka_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `motherboard`
 --
 ALTER TABLE `motherboard`
-  MODIFY `MB_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MB_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT für Tabelle `pc`
+--
+ALTER TABLE `pc`
+  MODIFY `PC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `ram`
 --
 ALTER TABLE `ram`
-  MODIFY `RAM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `RAM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `raum`
 --
 ALTER TABLE `raum`
   MODIFY `Raum_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints der exportierten Tabellen
+--
+
+--
+-- Constraints der Tabelle `pc`
+--
+ALTER TABLE `pc`
+  ADD CONSTRAINT `pc_ibfk_1` FOREIGN KEY (`CPU_FK`) REFERENCES `cpu` (`CPU_ID`),
+  ADD CONSTRAINT `pc_ibfk_2` FOREIGN KEY (`GRAKA_FK`) REFERENCES `graka` (`Graka_ID`),
+  ADD CONSTRAINT `pc_ibfk_3` FOREIGN KEY (`RAM_FK`) REFERENCES `ram` (`RAM_ID`),
+  ADD CONSTRAINT `pc_ibfk_4` FOREIGN KEY (`MB_FK`) REFERENCES `motherboard` (`MB_ID`),
+  ADD CONSTRAINT `pc_ibfk_5` FOREIGN KEY (`FP_FK`) REFERENCES `festplatte` (`FP_ID`),
+  ADD CONSTRAINT `pc_ibfk_6` FOREIGN KEY (`RAUM_FK`) REFERENCES `raum` (`Raum_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-CREATE TABLE pc(
-PC_ID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-PC_Nummer VARCHAR(10) NOT NULL,
-CPU_FK INTEGER NOT NULL,
-GRAKA_FK INTEGER NOT NULL,
-RAM_FK INTEGER NOT NULL,
-MB_FK INTEGER NOT NULL,
-FP_FK INTEGER NOT NULL,
-RAUM_FK INTEGER NOT NULL,
-Foreign Key (CPU_FK) REFERENCES cpu(CPU_ID),
-Foreign Key (GRAKA_FK) REFERENCES graka(Graka_ID),
-Foreign Key (RAM_FK) REFERENCES ram(RAM_ID),
-Foreign Key (MB_FK) REFERENCES motherboard(MB_ID),
-Foreign Key (FP_FK) REFERENCES festplatte(FP_ID),
-Foreign Key (RAUM_FK) REFERENCES raum(Raum_ID)
-);
-
-
-
