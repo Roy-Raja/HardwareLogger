@@ -94,7 +94,7 @@ function Legende() {
   return (
     <div>
       <Box>
-        <Box maxW={"30%"}>
+        <Box maxW={"30%"} ml="30%">
           <Stack>
             <Select
               placeholder="Raum auswählen"
@@ -117,8 +117,8 @@ function Legende() {
         </Box>
         <div>
           <Box pb={"5%"} pt="3%">
-            <TableContainer>
-              <Table maxW={"60%"}>
+            <TableContainer ml="15%">
+              <Table maxW={"80%"} bgGradient="linear(to-l, #7928CA, #FF0080)">
                 <Thead>
                   <Tr>
                     <Th>CPU</Th>
