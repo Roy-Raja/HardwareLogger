@@ -118,7 +118,16 @@ function Legende() {
         <div>
           <Box pb={"5%"} pt="3%">
             <TableContainer ml="15%">
-              <Table maxW={"80%"} bgGradient="linear(to-l, #7928CA, #FF0080)">
+              <Table
+                maxW={"80%"}
+                w="100%"
+                h="200px"
+                bgGradient={[
+                  "linear(to-tr, teal.300, yellow.400)",
+                  "linear(to-t, blue.200, teal.500)",
+                  "linear(to-b, orange.100, purple.300)",
+                ]}
+              >
                 <Thead>
                   <Tr>
                     <Th>CPU</Th>
