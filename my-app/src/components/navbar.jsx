@@ -16,11 +16,7 @@ export const Navbar = () => {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   return (
     <Box as="section" pb={{ base: "12", md: "24" }}>
-      <Box
-        as="nav"
-        bgGradient="linear(to-r, green.200, pink.500)"
-        boxShadow={useColorModeValue("sm", "sm-dark")}
-      >
+      <Box as="nav" boxShadow={useColorModeValue("sm", "sm-dark")}>
         <Container py={{ base: "4", lg: "5" }}>
           <HStack spacing="10" justify="space-between">
             {isDesktop ? (

@@ -98,6 +98,7 @@ function Legende() {
           <Stack>
             <Select
               placeholder="Raum auswählen"
+              bg={"white"}
               onChange={(e) => PCsetzer(e.target.value)}
             >
               {raumliste.map((v) => (
@@ -107,6 +108,7 @@ function Legende() {
 
             <Select
               placeholder="PC auswählen"
+              bg={"white"}
               onChange={(e) => HWsetzer(e.target.value)}
             >
               {pcliste.map((v) => (
@@ -118,16 +120,7 @@ function Legende() {
         <div>
           <Box pb={"5%"} pt="3%">
             <TableContainer ml="15%">
-              <Table
-                maxW={"80%"}
-                w="100%"
-                h="200px"
-                bgGradient={[
-                  "linear(to-tr, teal.300, yellow.400)",
-                  "linear(to-t, blue.200, teal.500)",
-                  "linear(to-b, orange.100, purple.300)",
-                ]}
-              >
+              <Table maxW={"80%"} w="100%" h="200px">
                 <Thead>
                   <Tr>
                     <Th>CPU</Th>

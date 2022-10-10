@@ -18,6 +18,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
@@ -87,34 +91,33 @@ function Save() {
   const [hwliste, sethwliste] = useState([]);
 
   return (
-    <Center>
-      <Box w="50%" p="4">
-        <Stack>
-          <Select
-            placeholder="Raum auswählen"
-            onChange={(e) => PCsetzer(e.target.value)}
-          >
-            {raumliste.map((v) => (
-              <option value={v}>{v}</option>
-            ))}
-          </Select>
+    <>
+      <Center>
+        <Box w="50%" p="4">
+          <Stack>
+            <Select
+              bg={"white"}
+              placeholder="Raum auswählen"
+              onChange={(e) => PCsetzer(e.target.value)}
+            >
+              {raumliste.map((v) => (
+                <option value={v}>{v}</option>
+              ))}
+            </Select>
 
-          <Select
-            placeholder="PC auswählen"
-            onChange={(e) => HWsetzer(e.target.value)}
-          >
-            {pcliste.map((v) => (
-              <option value={v}>{v}</option>
-            ))}
-          </Select>
-          {hwliste.map((v) => (
+            <FormControl isRequired>
+              <FormLabel>Platz Nr. eingeben</FormLabel>
+              <Input placeholder="Platz Nr:" />
+            </FormControl>
+            {/* {hwliste.map((v) => (
             <Select placeholder="CPU auswählen">
               <option value="option1">{v.CPU_Hersteller}</option>
             </Select>
-          ))}
-        </Stack>
-      </Box>
-    </Center>
+          ))} */}
+          </Stack>
+        </Box>
+      </Center>
+    </>
   );
 }
 
