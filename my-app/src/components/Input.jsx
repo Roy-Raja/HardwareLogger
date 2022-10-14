@@ -22,6 +22,7 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
@@ -32,9 +33,9 @@ function Save() {
   var raum = [];
 
   useEffect(() => {
+    hardware();
     Raumsetzer();
-    HWsetzer();
-  });
+  }, []);
 
   const Raumsetzer = async () => {
     try {
@@ -52,23 +53,6 @@ function Save() {
     }
   };
 
-  const HWsetzer = async (PC_Nummer) => {
-    try {
-      await Axios.get("/hardware", { params: { PC_Nummer } }).then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          hwliste.push(res.data[i]);
-          console.log(res.data);
-        }
-        sethwliste(res.data);
-        console.log(PC_Nummer);
-        console.log(hwliste);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(hwliste);
-  };
-
   const PCsetzer = async (Raum) => {
     try {
       await Axios.get("/pc", { params: { Raum } }).then((res) => {
@@ -84,12 +68,57 @@ function Save() {
       console.log(e);
     }
   };
+  const hardware = async () => {
+    try {
+      await Axios.get("/cpu").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          pcs.push(res.data[i]);
+        }
+        setcpuliste(res.data);
+        console.log(cpuliste);
+      });
+      await Axios.get("/graka").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          pcs.push(res.data[i]);
+        }
+        setgrakaliste(res.data);
+        console.log(grakaliste);
+      });
+      await Axios.get("/ram").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          pcs.push(res.data[i]);
+        }
+        setramliste(res.data);
+        console.log(ramliste);
+      });
+      await Axios.get("/fp").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          pcs.push(res.data[i]);
+        }
+        setfpliste(res.data);
+        console.log(ramliste);
+      });
+      await Axios.get("/mb").then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          pcs.push(res.data[i]);
+        }
+        setmbliste(res.data);
+        console.log(ramliste);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
+  const [cpuliste, setcpuliste] = useState([]);
+  const [grakaliste, setgrakaliste] = useState([]);
+  const [ramliste, setramliste] = useState([]);
+  const [fpliste, setfpliste] = useState([]);
+  const [mbliste, setmbliste] = useState([]);
   const [pcliste, setpcliste] = useState([]);
   const [raumliste, setraumliste] = useState([]);
-
   const [hwliste, sethwliste] = useState([]);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Center>
@@ -105,15 +134,60 @@ function Save() {
               ))}
             </Select>
 
-            <FormControl isRequired>
-              <FormLabel>Platz Nr. eingeben</FormLabel>
-              <Input placeholder="Platz Nr:" />
-            </FormControl>
-            {/* {hwliste.map((v) => (
-            <Select placeholder="CPU auswählen">
-              <option value="option1">{v.CPU_Hersteller}</option>
-            </Select>
-          ))} */}
+            <Button onClick={onOpen}>Open Modal</Button>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>PC zusammenstellen</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Select
+                    bg={"white"}
+                    placeholder="CPU auswählen"
+                    onChange={(e) => console.log(e.target)}
+                  >
+                    {cpuliste.map((v) => (
+                      <option value={v}>
+                        {v.CPU_Hersteller + " " + v.CPU_Bezeichnung}
+                      </option>
+                    ))}
+                  </Select>
+                  <Select bg={"white"} placeholder="Graka auswählen">
+                    {grakaliste.map((v) => (
+                      <option value={v}>
+                        {v.Graka_Hersteller + " " + v.Graka_Bezeichnung}
+                      </option>
+                    ))}
+                  </Select>
+
+                  <Select bg={"white"} placeholder="Ram auswählen">
+                    {ramliste.map((v) => (
+                      <option value={v}>
+                        {v.RAM_Hersteller + " " + v.RAM_Bezeichnung}
+                      </option>
+                    ))}
+                  </Select>
+                  <Select bg={"white"} placeholder="Festplatte auswählen">
+                    {fpliste.map((v) => (
+                      <option value={v}>{v.FP_Bezeichnung}</option>
+                    ))}
+                  </Select>
+                  <Select bg={"white"} placeholder="Motherboard auswählen">
+                    {mbliste.map((v) => (
+                      <option value={v}>{v.MB_Bezeichnung}</option>
+                    ))}
+                  </Select>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button variant="ghost">Secondary Action</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Stack>
         </Box>
       </Center>

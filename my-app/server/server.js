@@ -77,68 +77,54 @@ app.get("/hardware", (req, res) => {
 });
 
 app.get("/cpu", (req, res) => {
-  db.query(
-    `(SELECT CPU_Hersteller as 'CPUName', CPU_Bezeichnung as 'CPUModell', CPU_Kerne FROM cpu )`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query(`(SELECT * from cpu )`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.send(result);
     }
-  );
+  });
 });
 
-app.get("/Graka", (req, res) => {
-  db.query(
-    `(SELECT Graka_Hersteller as 'GrakaName', Graka_Bezeichnung as 'GrakaModell', Graka_Mhz, Graka_VRAM FROM graka )`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+app.get("/graka", (req, res) => {
+  db.query(`(SELECT * from graka )`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/ram", (req, res) => {
-  db.query(
-    `(SELECT RAM_Hersteller as 'RAMName', RAM_Bezeichnung as 'RAMModell', RAM_Mhz, RAM_Speicher, RAM_Standard FROM ram)`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query(`(SELECT * FROM ram)`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/mb", (req, res) => {
-  db.query(
-    `(SELECT MB_Bezeichnung as 'MBModell', MB_Faktor, MB_Sockel, MB_Chipsatz, MB_RAM_Slots, MB_RAM_Typ FROM motherboard)`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query(`(SELECT * FROM motherboard)`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.get("/fp", (req, res) => {
-  db.query(
-    `(SELECT FP_Bezeichnung as 'FPModell', FP_Typ, FP_Speicher  FROM festplatte)`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+  db.query(`(SELECT *  FROM festplatte)`, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 });
 
 app.listen(port, () => {
