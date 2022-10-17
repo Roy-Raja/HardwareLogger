@@ -26,22 +26,23 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-import { Loader } from "../Context/Context";
+import Context from "../Context/Context";
 
 function Save() {
   var pcs = [];
   var raum = [];
-
+  const [input, setinput] = useState({});
   useEffect(() => {
     hardware();
     Raumsetzer();
-  }, []);
+    console.log(input);
+  }, [input]);
 
   const Raumsetzer = async () => {
     try {
       await Axios.get("/raum").then((res) => {
         for (let i = 0; i < res.data.length; i++) {
-          raum.push(res.data[i].Raum_Nummer);
+          raum.push(res.data[i]);
         }
 
         setraumliste(raum);
@@ -62,11 +63,31 @@ function Save() {
 
         setpcliste(pcs);
 
-        // console.log(pcs);
+        console.log(pcs);
       });
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const HWsetzer = async (PC_Nummer) => {
+    try {
+      await Axios.get("/hardware", { params: { PC_Nummer } }).then((res) => {
+        // for (let i = 0; i < res.data.length; i++) {
+        //   hw.push(res.data[i]);
+        //   // console.log(res.data[i]);
+        //   console.log(hw);
+        // }
+
+        setInputlist(res.data);
+        // console.log(PC_Nummer);
+        // console.log(hwliste);
+        // console.log(hw);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(hwliste);
   };
   const hardware = async () => {
     try {
@@ -110,6 +131,15 @@ function Save() {
     }
   };
 
+  const add = () => {
+    Axios.post("/add", {
+      PCinfos: input,
+    })
+      .then(function (response) {})
+      .catch(function (error) {});
+  };
+
+  const { Inputlist, setInputlist } = useContext(Context);
   const [cpuliste, setcpuliste] = useState([]);
   const [grakaliste, setgrakaliste] = useState([]);
   const [ramliste, setramliste] = useState([]);
@@ -127,14 +157,27 @@ function Save() {
             <Select
               bg={"white"}
               placeholder="Raum auswählen"
-              onChange={(e) => PCsetzer(e.target.value)}
+              onChange={(e) => (
+                PCsetzer(e.target.value),
+                console.log(e.target.value),
+                setinput({ ...input, Raum_Nummer: e.target.value })
+              )}
             >
               {raumliste.map((v) => (
+                <option value={v.Raum_ID}>{v.Raum_Nummer}</option>
+              ))}
+            </Select>
+            <Select
+              placeholder="PC auswählen"
+              bg={"white"}
+              onChange={(e) => (HWsetzer(e.target.value), console.log(pcliste))}
+            >
+              {pcliste.map((v) => (
                 <option value={v}>{v}</option>
               ))}
             </Select>
 
-            <Button onClick={onOpen}>Open Modal</Button>
+            <Button onClick={onOpen}>PC Hinzufügen</Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
@@ -142,40 +185,73 @@ function Save() {
                 <ModalHeader>PC zusammenstellen</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
+                  <Input
+                    isRequired={true}
+                    placeholder="PC Nummer hinzufügen"
+                    onChange={(e) =>
+                      setinput({ ...input, PC_Nummer: e.target.value })
+                    }
+                  />
                   <Select
                     bg={"white"}
                     placeholder="CPU auswählen"
-                    onChange={(e) => console.log(e.target)}
+                    onChange={(e) =>
+                      setinput({ ...input, CPU_ID: e.target.value })
+                    }
                   >
                     {cpuliste.map((v) => (
-                      <option value={v}>
+                      <option value={v.CPU_ID}>
                         {v.CPU_Hersteller + " " + v.CPU_Bezeichnung}
                       </option>
                     ))}
                   </Select>
-                  <Select bg={"white"} placeholder="Graka auswählen">
+                  <Select
+                    bg={"white"}
+                    placeholder="Graka auswählen"
+                    onChange={(e) =>
+                      setinput({ ...input, Graka_ID: e.target.value })
+                    }
+                  >
                     {grakaliste.map((v) => (
-                      <option value={v}>
+                      <option value={v.Graka_ID}>
                         {v.Graka_Hersteller + " " + v.Graka_Bezeichnung}
                       </option>
                     ))}
                   </Select>
 
-                  <Select bg={"white"} placeholder="Ram auswählen">
+                  <Select
+                    bg={"white"}
+                    placeholder="Ram auswählen"
+                    onChange={(e) =>
+                      setinput({ ...input, RAM_ID: e.target.value })
+                    }
+                  >
                     {ramliste.map((v) => (
-                      <option value={v}>
+                      <option value={v.RAM_ID}>
                         {v.RAM_Hersteller + " " + v.RAM_Bezeichnung}
                       </option>
                     ))}
                   </Select>
-                  <Select bg={"white"} placeholder="Festplatte auswählen">
+                  <Select
+                    bg={"white"}
+                    placeholder="Festplatte auswählen"
+                    onChange={(e) =>
+                      setinput({ ...input, FP_ID: e.target.value })
+                    }
+                  >
                     {fpliste.map((v) => (
-                      <option value={v}>{v.FP_Bezeichnung}</option>
+                      <option value={v.FP_ID}>{v.FP_Bezeichnung}</option>
                     ))}
                   </Select>
-                  <Select bg={"white"} placeholder="Motherboard auswählen">
+                  <Select
+                    bg={"white"}
+                    placeholder="Motherboard auswählen"
+                    onChange={(e) =>
+                      setinput({ ...input, MB_ID: e.target.value })
+                    }
+                  >
                     {mbliste.map((v) => (
-                      <option value={v}>{v.MB_Bezeichnung}</option>
+                      <option value={v.MB_ID}>{v.MB_Bezeichnung}</option>
                     ))}
                   </Select>
                 </ModalBody>
@@ -184,7 +260,15 @@ function Save() {
                   <Button colorScheme="blue" mr={3} onClick={onClose}>
                     Close
                   </Button>
-                  <Button variant="ghost">Secondary Action</Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      add();
+                      onClose();
+                    }}
+                  >
+                    Secondary Action
+                  </Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>

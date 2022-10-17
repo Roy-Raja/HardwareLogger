@@ -23,16 +23,15 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-import { Loader } from "../Context/Context";
+import Context from "../Context/Context";
 
-function Legende() {
-  const { abfrage } = useContext(Loader);
+function Display() {
   var pcs = [];
   var raum = [];
 
   useEffect(() => {
     Raumsetzer();
-  }, [abfrage]);
+  }, []);
 
   const Raumsetzer = async () => {
     try {
@@ -51,25 +50,25 @@ function Legende() {
     }
   };
 
-  const HWsetzer = async (PC_Nummer) => {
-    try {
-      await Axios.get("/hardware", { params: { PC_Nummer } }).then((res) => {
-        // for (let i = 0; i < res.data.length; i++) {
-        //   hw.push(res.data[i]);
-        //   // console.log(res.data[i]);
-        //   console.log(hw);
-        // }
+  // const HWsetzer = async (PC_Nummer) => {
+  //   try {
+  //     await Axios.get("/hardware", { params: { PC_Nummer } }).then((res) => {
+  //       // for (let i = 0; i < res.data.length; i++) {
+  //       //   hw.push(res.data[i]);
+  //       //   // console.log(res.data[i]);
+  //       //   console.log(hw);
+  //       // }
 
-        sethwliste(res.data);
-        // console.log(PC_Nummer);
-        // console.log(hwliste);
-        // console.log(hw);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(hwliste);
-  };
+  //       sethwliste(res.data);
+  //       // console.log(PC_Nummer);
+  //       // console.log(hwliste);
+  //       // console.log(hw);
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  //   console.log(hwliste);
+  // };
 
   const PCsetzer = async (Raum) => {
     try {
@@ -86,6 +85,7 @@ function Legende() {
       console.log(e);
     }
   };
+  const { Inputlist, setInputlist } = useContext(Context);
 
   const [pcliste, setpcliste] = useState([]);
   const [raumliste, setraumliste] = useState([]);
@@ -96,7 +96,7 @@ function Legende() {
       <Box>
         <Box maxW={"30%"} ml="30%">
           <Stack>
-            <Select
+            {/* <Select
               placeholder="Raum auswählen"
               bg={"white"}
               onChange={(e) => PCsetzer(e.target.value)}
@@ -114,7 +114,7 @@ function Legende() {
               {pcliste.map((v) => (
                 <option value={v}>{v}</option>
               ))}
-            </Select>
+            </Select> */}
           </Stack>
         </Box>
         <div>
@@ -131,7 +131,7 @@ function Legende() {
                   </Tr>
                 </Thead>
 
-                {hwliste.map((v) => (
+                {Inputlist.map((v) => (
                   <Tbody>
                     <Tr>
                       <Td>{v.CPU_Hersteller}</Td>
@@ -179,4 +179,4 @@ function Legende() {
   );
 }
 
-export default Legende;
+export default Display;

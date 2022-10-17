@@ -11,15 +11,14 @@ import {
   theme,
 } from "@chakra-ui/react";
 
-import Login from "./pages/Login";
-
 import Input from "./pages/Input";
 
-import Formular from "./pages/Display";
 import { extendTheme } from "@chakra-ui/react";
 import Axios from "axios";
+import EingabeContext from "./Context/Context";
 
 import { Route, Routes } from "react-router-dom";
+import ContextWrapper from "./Context/ContextWrapper";
 
 Axios.defaults.baseURL = "http://localhost:3001";
 
@@ -35,11 +34,11 @@ function App() {
   });
   return (
     <ChakraProvider theme={theme}>
-      <Routes>
-        <Route path="/Login" element={<Login />}></Route>
-        <Route path="/Display" element={<Formular />}></Route>
-        <Route path="/Input" element={<Input />}></Route>
-      </Routes>
+      <ContextWrapper>
+        <Routes>
+          <Route path="/Input" element={<Input />}></Route>
+        </Routes>
+      </ContextWrapper>
     </ChakraProvider>
   );
 }
