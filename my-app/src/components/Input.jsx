@@ -23,6 +23,10 @@ import {
   FormErrorMessage,
   FormHelperText,
   useDisclosure,
+  Alert,
+  AlertIcon,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
@@ -138,7 +142,7 @@ function Save() {
       .then(function (response) {})
       .catch(function (error) {});
   };
-
+  const toast = useToast();
   const { Inputlist, setInputlist } = useContext(Context);
   const [cpuliste, setcpuliste] = useState([]);
   const [grakaliste, setgrakaliste] = useState([]);
@@ -152,9 +156,10 @@ function Save() {
   return (
     <>
       <Center>
-        <Box w="50%" p="4">
+        <Box w="50%" p="4" ml={"20%"} mt="5%">
           <Stack>
             <Select
+              w="50%"
               bg={"white"}
               placeholder="Raum auswählen"
               onChange={(e) => (
@@ -168,6 +173,7 @@ function Save() {
               ))}
             </Select>
             <Select
+              w="50%"
               placeholder="PC auswählen"
               bg={"white"}
               onChange={(e) => (HWsetzer(e.target.value), console.log(pcliste))}
@@ -177,7 +183,9 @@ function Save() {
               ))}
             </Select>
 
-            <Button onClick={onOpen}>PC Hinzufügen</Button>
+            <Button w="50%" onClick={onOpen}>
+              PC Hinzufügen
+            </Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
@@ -201,7 +209,14 @@ function Save() {
                   >
                     {cpuliste.map((v) => (
                       <option value={v.CPU_ID}>
-                        {v.CPU_Hersteller + " " + v.CPU_Bezeichnung}
+                        {v.CPU_Hersteller +
+                          " " +
+                          v.CPU_Bezeichnung +
+                          " " +
+                          v.CPU_Kerne +
+                          " Kerne " +
+                          v.CPU_Mhz +
+                          " Mhz"}
                       </option>
                     ))}
                   </Select>
@@ -214,7 +229,11 @@ function Save() {
                   >
                     {grakaliste.map((v) => (
                       <option value={v.Graka_ID}>
-                        {v.Graka_Hersteller + " " + v.Graka_Bezeichnung}
+                        {v.Graka_Hersteller +
+                          " " +
+                          v.Graka_Bezeichnung +
+                          " " +
+                          v.Graka_VRAM}
                       </option>
                     ))}
                   </Select>
@@ -228,7 +247,11 @@ function Save() {
                   >
                     {ramliste.map((v) => (
                       <option value={v.RAM_ID}>
-                        {v.RAM_Hersteller + " " + v.RAM_Bezeichnung}
+                        {v.RAM_Hersteller +
+                          "  " +
+                          v.RAM_Standard +
+                          "  " +
+                          v.RAM_Speicher}
                       </option>
                     ))}
                   </Select>
@@ -240,7 +263,13 @@ function Save() {
                     }
                   >
                     {fpliste.map((v) => (
-                      <option value={v.FP_ID}>{v.FP_Bezeichnung}</option>
+                      <option value={v.FP_ID}>
+                        {v.FP_Bezeichnung +
+                          "    " +
+                          v.FP_Typ +
+                          "    " +
+                          v.FP_Speicher}
+                      </option>
                     ))}
                   </Select>
                   <Select
@@ -251,23 +280,38 @@ function Save() {
                     }
                   >
                     {mbliste.map((v) => (
-                      <option value={v.MB_ID}>{v.MB_Bezeichnung}</option>
+                      <option value={v.MB_ID}>
+                        {v.MB_Bezeichnung +
+                          "  " +
+                          v.MB_RAM_Typ +
+                          "  " +
+                          v.MB_Faktor +
+                          "  " +
+                          v.MB_Sockel}
+                      </option>
                     ))}
                   </Select>
                 </ModalBody>
 
                 <ModalFooter>
                   <Button colorScheme="blue" mr={3} onClick={onClose}>
-                    Close
+                    Abbrechen
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => {
                       add();
                       onClose();
+                      toast({
+                        title: "PC wurde hinzugefügt",
+
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                      });
                     }}
                   >
-                    Secondary Action
+                    Hinzufügen
                   </Button>
                 </ModalFooter>
               </ModalContent>
