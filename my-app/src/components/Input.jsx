@@ -156,7 +156,7 @@ function Save() {
   return (
     <>
       <Center>
-        <Box w="50%" p="4" ml={"20%"} mt="5%">
+        <Box w="50%" p="4" ml={"20%"}>
           <Stack>
             <Select
               w="50%"

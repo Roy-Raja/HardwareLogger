@@ -8,6 +8,7 @@ import {
   IconButton,
   useBreakpointValue,
   useColorModeValue,
+  Text,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ export const Navbar = () => {
           <HStack spacing="10" justify="space-between">
             {isDesktop ? (
               <Flex justify="space-between" flex="1">
-                <Box
+                {/* <Box
                   as="button"
                   p={2}
                   color="white"
@@ -33,8 +34,9 @@ export const Navbar = () => {
                   }}
                 >
                   <Link to="/Display">Display</Link>
-                </Box>
-                <Box
+                </Box> */}
+                <Text fontSize="6xl"> HardwareLogger</Text>
+                {/* <Box
                   as="button"
                   p={2}
                   color="white"
@@ -46,7 +48,7 @@ export const Navbar = () => {
                   }}
                 >
                   <Link to="/Input">Input</Link>
-                </Box>
+                </Box> */}
               </Flex>
             ) : (
               <IconButton variant="ghost" aria-label="Open Menu" />

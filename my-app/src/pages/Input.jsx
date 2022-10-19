@@ -6,6 +6,7 @@ import Display from "../components/display";
 function Formular() {
   return (
     <div>
+      <Navbar />
       <Input />
       <Display />
     </div>
